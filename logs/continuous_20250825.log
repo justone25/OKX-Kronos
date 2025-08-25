@@ -1,0 +1,130 @@
+2025-08-25 11:55:30,357 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 11:55:30,357 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 11:55:30,357 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 11:55:30,357 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 11:55:30,870 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 11:55:30,871 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 11:55:30,874 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 11:55:30,874 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 11:55:30,874 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 11:55:42,504 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 11:55:42,504 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 11:55:42,504 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 11:55:42,504 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 11:55:42,882 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 11:55:42,883 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 11:55:42,883 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 11:55:42,883 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 11:55:42,883 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 11:55:42,883 - __main__ - INFO - 🎯 启动持续预测系统
+2025-08-25 11:55:42,883 - src.scheduler.prediction_scheduler - INFO - 🚀 启动持续预测调度器
+2025-08-25 11:55:42,884 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-25 11:55:42,884 - src.trading.prediction_service - INFO - 开始获取预测，回看6小时，预测1小时
+2025-08-25 11:55:43,465 - src.trading.prediction_service - INFO - 获取到 72 条历史数据
+2025-08-25 11:55:43,466 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 12
+2025-08-25 11:55:44,374 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-25 11:55:44,375 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-25 11:55:44,378 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-25 11:55:44,380 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已启动，每 2 分钟更新一次预测
+2025-08-25 11:55:44,380 - __main__ - INFO - ✅ 系统启动成功，开始持续预测
+2025-08-25 11:57:43,844 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-25 11:57:43,846 - src.trading.prediction_service - INFO - 开始获取预测，回看6小时，预测1小时
+2025-08-25 11:57:44,615 - src.trading.prediction_service - INFO - 获取到 72 条历史数据
+2025-08-25 11:57:44,616 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 12
+2025-08-25 11:57:45,020 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-25 11:57:45,020 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-25 11:57:45,023 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-25 11:58:52,740 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 11:58:52,740 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 11:58:52,740 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 11:58:52,740 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 11:58:53,178 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 11:58:53,178 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 11:58:53,179 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 11:58:53,179 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 11:58:53,179 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 11:59:40,695 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 11:59:40,695 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 11:59:40,695 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 11:59:40,695 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 11:59:41,191 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 11:59:41,192 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 11:59:41,192 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 11:59:41,192 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 11:59:41,192 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 13:25:16,489 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 13:25:16,490 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 13:25:16,490 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 13:25:16,490 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 13:25:16,918 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 13:25:16,918 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 13:25:16,920 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 13:25:16,920 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 13:25:16,920 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 13:25:16,920 - __main__ - INFO - 🎯 启动持续预测系统
+2025-08-25 13:25:16,920 - src.scheduler.prediction_scheduler - INFO - 🚀 启动持续预测调度器
+2025-08-25 13:25:16,920 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-25 13:25:16,920 - src.trading.prediction_service - INFO - 开始获取预测，回看12小时，预测3小时
+2025-08-25 13:25:18,051 - src.trading.prediction_service - INFO - 获取到 144 条历史数据
+2025-08-25 13:25:18,052 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 36
+2025-08-25 13:25:20,175 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-25 13:25:20,176 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-25 13:25:20,179 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-25 13:25:20,181 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已启动，每 15 分钟更新一次预测
+2025-08-25 13:25:20,181 - __main__ - INFO - ✅ 系统启动成功，开始持续预测
+2025-08-25 13:38:35,161 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 13:38:35,180 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 13:38:35,180 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 13:38:35,180 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 13:38:35,824 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 13:38:35,825 - src.models.kronos_model - INFO - 🖥️ 使用计算设备: mps
+2025-08-25 13:38:35,825 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 13:38:35,826 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 13:38:35,826 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 13:38:35,826 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 13:38:35,826 - __main__ - INFO - 🎯 启动持续预测系统
+2025-08-25 13:38:35,826 - src.scheduler.prediction_scheduler - INFO - 🚀 启动持续预测调度器
+2025-08-25 13:38:35,826 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-25 13:38:35,826 - src.trading.prediction_service - INFO - 开始获取预测，回看12小时，预测3小时
+2025-08-25 13:38:36,709 - src.trading.prediction_service - INFO - 获取到 144 条历史数据
+2025-08-25 13:38:36,710 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 36
+2025-08-25 13:38:36,710 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 1.0, Top-p: 0.9, 采样次数: 1
+2025-08-25 13:38:53,733 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-25 13:38:53,734 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-25 13:38:53,736 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-25 13:38:53,738 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已启动，每 15 分钟更新一次预测
+2025-08-25 13:38:53,738 - __main__ - INFO - ✅ 系统启动成功，开始持续预测
+2025-08-25 13:40:17,495 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-25 13:40:17,496 - src.trading.prediction_service - INFO - 开始获取预测，回看12小时，预测3小时
+2025-08-25 13:40:17,986 - src.trading.prediction_service - INFO - 获取到 144 条历史数据
+2025-08-25 13:40:17,987 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 36
+2025-08-25 13:40:19,662 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-25 13:40:19,662 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-25 13:40:19,665 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-25 13:40:52,514 - __main__ - INFO - 收到信号 2，正在优雅关闭系统...
+2025-08-25 13:40:52,514 - __main__ - INFO - 🛑 正在停止持续预测系统
+2025-08-25 13:40:52,514 - src.scheduler.prediction_scheduler - INFO - 🛑 停止持续预测调度器
+2025-08-25 13:40:52,802 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已停止
+2025-08-25 13:40:52,803 - __main__ - INFO - ✅ 系统已停止
+2025-08-25 13:42:58,357 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-25 13:42:58,376 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-25 13:42:58,376 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-25 13:42:58,376 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-25 13:42:58,852 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-25 13:42:58,853 - src.models.kronos_model - INFO - 🖥️ 使用计算设备: mps
+2025-08-25 13:42:58,853 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-25 13:42:58,856 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-25 13:42:58,856 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-25 13:42:58,856 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-25 13:42:58,856 - __main__ - INFO - 🎯 启动持续预测系统
+2025-08-25 13:42:58,856 - src.scheduler.prediction_scheduler - INFO - 🚀 启动持续预测调度器
+2025-08-25 13:42:58,856 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-25 13:42:58,856 - src.trading.prediction_service - INFO - 开始获取预测，回看12小时，预测3小时
+2025-08-25 13:42:59,424 - src.trading.prediction_service - INFO - 获取到 144 条历史数据
+2025-08-25 13:42:59,425 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 36
+2025-08-25 13:42:59,425 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 1.0, Top-p: 0.9, 采样次数: 1
+2025-08-25 13:43:03,591 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-25 13:43:03,592 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-25 13:43:03,595 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-25 13:43:03,597 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已启动，每 15 分钟更新一次预测
+2025-08-25 13:43:03,597 - __main__ - INFO - ✅ 系统启动成功，开始持续预测

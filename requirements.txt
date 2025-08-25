@@ -1,0 +1,44 @@
+# OKX-Kronos项目依赖 - 修正版本
+# 移除了sqlite3（Python内置），调整了版本兼容性
+
+# OKX API
+okx
+
+# 数据处理
+pandas>=1.3.0
+numpy>=1.20.0
+
+# 机器学习和深度学习
+torch>=1.12.0
+transformers>=4.20.0
+huggingface_hub>=0.10.0
+
+# 网络和异步
+websockets>=10.0
+aiohttp>=3.7.0
+requests>=2.25.0
+
+# 可视化
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# 工具库
+tqdm>=4.60.0
+einops>=0.4.0
+python-dotenv>=0.19.0
+
+# 日志
+loguru>=0.6.0
+
+# 科学计算辅助
+scipy>=1.7.0
+
+# 字体支持
+fonttools>=4.25.0
+
+# Kronos模型依赖
+einops>=0.6.0
+safetensors>=0.3.0
+
+# 调度和监控
+schedule>=1.2.0
