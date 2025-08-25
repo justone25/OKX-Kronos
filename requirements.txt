@@ -42,3 +42,7 @@ safetensors>=0.3.0
 
 # 调度和监控
 schedule>=1.2.0
+
+# Web界面
+Flask>=2.3.0
+Werkzeug>=2.3.0

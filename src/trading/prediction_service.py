@@ -46,7 +46,7 @@ class PredictionService:
         
         self.logger.info("✅ 预测服务初始化完成")
     
-    def get_prediction(self, lookback_hours: int = 24, pred_hours: int = 6,
+    def get_prediction(self, lookback_hours: int = 48, pred_hours: int = 2,
                       temperature: float = 1.0, top_p: float = 0.9,
                       sample_count: int = 1, seed: Optional[int] = None,
                       deterministic: bool = False) -> Dict[str, Any]:

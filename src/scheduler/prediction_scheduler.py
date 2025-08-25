@@ -51,12 +51,13 @@ class PredictionScheduler:
         self.scheduler_thread = None
         
         # 配置参数
-        self.prediction_interval = 30  # 预测间隔（分钟）
-        self.lookback_hours = 12      # 回看小时数
-        self.pred_hours = 6           # 预测小时数
-        self.temperature = 1.0        # 采样温度
+        self.prediction_interval = 10  # 预测间隔（分钟）
+        self.lookback_hours = 48      # 回看小时数
+        self.pred_hours = 2           # 预测小时数
+        self.temperature = 0.8        # 采样温度
         self.top_p = 0.9             # nucleus采样参数
-        self.sample_count = 1        # 采样次数
+        self.sample_count = 3        # 采样次数
+        
         
         self.logger.info("✅ 预测调度器初始化完成")
     

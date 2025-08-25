@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kronos BTC 预测仪表板</title>
+
+    <!-- CSS 样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dashboard.css') }}?v=20250825-simple" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>
+                Kronos BTC 预测系统
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text" id="last-update">
+                    <i class="fas fa-clock me-1"></i>
+                    最后更新: 加载中...
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- 系统状态卡片 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card status-card text-white" id="system-status-card">
+                    <div class="card-body">
+                        <h6 class="card-title">系统状态</h6>
+                        <h4 id="system-status">
+                            <i class="fas fa-spinner fa-spin"></i> 检查中
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card status-card bg-success text-white">
+                    <div class="card-body">
+                        <h6 class="card-title">当前价格</h6>
+                        <h4 id="current-price">$0.00</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card status-card bg-info text-white">
+                    <div class="card-body">
+                        <h6 class="card-title">预测价格</h6>
+                        <h4 id="predicted-price">$0.00</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card status-card text-white" id="trend-card">
+                    <div class="card-body">
+                        <h6 class="card-title">预测趋势</h6>
+                        <h4 id="price-trend">--</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-area me-2"></i>
+                            价格预测趋势图
+                        </h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="updateChart(6)">6小时</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm active"
+                                onclick="updateChart(24)">24小时</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="updateChart(48)">48小时</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="updateChart(168)">7天</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="priceChart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预测记录表格 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>
+                            预测记录
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>时间</th>
+                                        <th>当前价格</th>
+                                        <th>预测价格</th>
+                                        <th>价格变化</th>
+                                        <th>趋势</th>
+                                        <th>波动率</th>
+                                        <th>参数</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="predictions-table">
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <i class="fas fa-spinner fa-spin me-2"></i>
+                                            加载中...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 分页 -->
+                        <nav aria-label="预测记录分页">
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <!-- 分页按钮将通过JavaScript生成 -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+
+</html>
