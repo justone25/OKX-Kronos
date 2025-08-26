@@ -103,6 +103,95 @@
             </div>
         </div>
 
+        <!-- 持仓信息区域 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-wallet me-2"></i>
+                            持仓信息
+                            <span class="badge bg-secondary ms-2" id="positions-count">0</span>
+                        </h5>
+                        <div class="d-flex align-items-center">
+                            <small class="text-muted me-3" id="positions-last-update">
+                                <i class="fas fa-clock me-1"></i>
+                                更新中...
+                            </small>
+                            <button class="btn btn-outline-primary btn-sm" onclick="refreshPositions()">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                刷新
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- 持仓概览卡片 -->
+                        <div class="row mb-3" id="positions-overview">
+                            <div class="col-md-3">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">总持仓数</h6>
+                                        <h4 class="text-primary" id="total-positions">0</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">总未实现盈亏</h6>
+                                        <h4 id="total-upl">$0.00</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">总保证金</h6>
+                                        <h4 class="text-info" id="total-margin">$0.00</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title text-muted">盈亏比例</h6>
+                                        <h4 id="total-upl-ratio">0.00%</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 持仓详细信息表格 -->
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="positions-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>合约</th>
+                                        <th>方向</th>
+                                        <th>数量</th>
+                                        <th>开仓均价</th>
+                                        <th>当前价格</th>
+                                        <th>未实现盈亏</th>
+                                        <th>盈亏比例</th>
+                                        <th>保证金</th>
+                                        <th>杠杆</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="positions-tbody">
+                                    <tr>
+                                        <td colspan="9" class="text-center text-muted">
+                                            <i class="fas fa-spinner fa-spin me-2"></i>
+                                            加载持仓信息中...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 预测记录表格 -->
         <div class="row">
             <div class="col-12">

@@ -17,6 +17,8 @@ project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
 from src.monitor.dashboard import PredictionDashboard
+from src.utils.config import OKXConfig
+from okx.api import Account, Trade
 
 
 class KronosWebDashboard:
@@ -28,13 +30,81 @@ class KronosWebDashboard:
         self.dashboard = PredictionDashboard(str(self.db_path))
         
         # 创建Flask应用
-        self.app = Flask(__name__, 
+        self.app = Flask(__name__,
                         template_folder='templates',
                         static_folder='static')
-        
+
+        # 初始化OKX API客户端
+        try:
+            self.okx_config = OKXConfig()
+            self.account_api = Account(
+                key=self.okx_config.api_key,
+                secret=self.okx_config.secret_key,
+                passphrase=self.okx_config.passphrase,
+                flag='0'  # 0: 实盘, 1: 模拟盘
+            )
+            self.trade_api = Trade(
+                key=self.okx_config.api_key,
+                secret=self.okx_config.secret_key,
+                passphrase=self.okx_config.passphrase,
+                flag='0'  # 0: 实盘, 1: 模拟盘
+            )
+            self.okx_enabled = True
+            print("✅ OKX API初始化成功")
+        except Exception as e:
+            print(f"⚠️ OKX API初始化失败: {e}")
+            self.okx_enabled = False
+
         # 注册路由
         self._register_routes()
-    
+
+    def safe_float(self, value, default=0.0):
+        """安全转换为浮点数"""
+        try:
+            if value is None or value == '':
+                return default
+            return float(value)
+        except (ValueError, TypeError):
+            return default
+
+    def get_positions(self) -> List[Dict[str, Any]]:
+        """获取持仓信息"""
+        if not self.okx_enabled:
+            return []
+
+        try:
+            response = self.account_api.get_positions()
+
+            if response.get('code') == '0':
+                positions = response.get('data', [])
+                # 只返回有持仓的记录
+                active_positions = []
+                for pos in positions:
+                    if self.safe_float(pos.get('pos', 0)) != 0:
+                        # 格式化持仓数据
+                        formatted_pos = {
+                            'instId': pos.get('instId', 'N/A'),
+                            'posSide': pos.get('posSide', 'N/A'),
+                            'pos': self.safe_float(pos.get('pos', 0)),
+                            'avgPx': self.safe_float(pos.get('avgPx', 0)),
+                            'markPx': self.safe_float(pos.get('markPx', 0)),
+                            'upl': self.safe_float(pos.get('upl', 0)),
+                            'uplRatio': self.safe_float(pos.get('uplRatio', 0)),
+                            'imr': self.safe_float(pos.get('imr', 0)),
+                            'lever': pos.get('lever', 'N/A'),
+                            'last': self.safe_float(pos.get('last', 0))
+                        }
+                        active_positions.append(formatted_pos)
+
+                return active_positions
+            else:
+                print(f"获取持仓失败: {response.get('msg')}")
+                return []
+
+        except Exception as e:
+            print(f"获取持仓异常: {e}")
+            return []
+
     def _register_routes(self):
         """注册路由"""
         
@@ -167,7 +237,32 @@ class KronosWebDashboard:
                     'success': False,
                     'error': str(e)
                 })
-    
+
+        @self.app.route('/api/positions')
+        def api_positions():
+            """获取持仓信息API"""
+            try:
+                positions = self.get_positions()
+
+                return jsonify({
+                    'success': True,
+                    'data': {
+                        'positions': positions,
+                        'count': len(positions),
+                        'timestamp': datetime.now().isoformat()
+                    }
+                })
+            except Exception as e:
+                return jsonify({
+                    'success': False,
+                    'error': str(e),
+                    'data': {
+                        'positions': [],
+                        'count': 0,
+                        'timestamp': datetime.now().isoformat()
+                    }
+                })
+
     def _get_paginated_predictions(self, page: int, per_page: int) -> List[Dict]:
         """获取分页的预测数据"""
         try:

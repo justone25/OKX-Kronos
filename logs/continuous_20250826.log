@@ -1,0 +1,273 @@
+2025-08-26 08:57:46,865 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-26 08:57:46,911 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-26 08:57:46,912 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-26 08:57:46,912 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-26 08:57:47,525 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-26 08:57:47,525 - src.models.kronos_model - INFO - 🖥️ 使用计算设备: mps
+2025-08-26 08:57:47,525 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-26 08:57:47,527 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-26 08:57:47,527 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-26 08:57:47,527 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-26 08:57:47,527 - __main__ - INFO - 🎯 启动持续预测系统
+2025-08-26 08:57:47,527 - src.scheduler.prediction_scheduler - INFO - 🚀 启动持续预测调度器
+2025-08-26 08:57:47,527 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 08:57:47,527 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 08:57:48,333 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 08:57:48,333 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 08:57:48,333 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 08:58:05,049 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 08:58:05,050 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 08:58:05,053 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 08:58:05,054 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已启动，每 10 分钟更新一次预测
+2025-08-26 08:58:05,055 - __main__ - INFO - ✅ 系统启动成功，开始持续预测
+2025-08-26 09:07:48,153 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 09:07:48,155 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 09:07:49,332 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 09:07:49,333 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 09:07:49,333 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 09:07:52,002 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 09:07:52,002 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 09:07:52,004 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 09:17:52,263 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 09:17:52,265 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 09:17:56,079 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 09:17:56,081 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 09:17:56,081 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 09:17:58,568 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 09:17:58,568 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 09:17:58,570 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 09:27:58,930 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 09:27:58,931 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 09:28:01,123 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 09:28:01,124 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 09:28:01,124 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 09:28:03,539 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 09:28:03,540 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 09:28:03,542 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 09:38:03,803 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 09:38:03,807 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 09:38:04,294 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 09:38:04,296 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 09:38:04,296 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 09:38:06,785 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 09:38:06,786 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 09:38:06,789 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 09:53:49,971 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 09:53:49,972 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 09:53:51,152 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 09:53:51,153 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 09:53:51,153 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 09:53:54,152 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 09:53:54,153 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 09:53:54,157 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 10:03:54,467 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 10:03:54,470 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 10:03:55,035 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 10:03:55,036 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 10:03:55,037 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 10:03:58,101 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 10:03:58,103 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 10:03:58,105 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 10:13:58,412 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 10:13:58,415 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 10:14:00,182 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 10:14:00,183 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 10:14:00,183 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 10:14:03,047 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 10:14:03,047 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 10:14:03,049 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 10:24:03,399 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 10:24:03,402 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 10:24:04,184 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 10:24:04,184 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 10:24:04,185 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 10:24:06,877 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 10:24:06,878 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 10:24:06,881 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 10:34:07,202 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 10:34:07,202 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 10:34:08,181 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 10:34:08,182 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 10:34:08,182 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 10:34:11,164 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 10:34:11,165 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 10:34:11,168 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 10:44:11,213 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 10:44:11,216 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 10:44:11,855 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 10:44:11,856 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 10:44:11,856 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 10:44:14,949 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 10:44:14,949 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 10:44:14,952 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 10:54:15,176 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 10:54:15,177 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 10:58:30,914 - src.data.okx_fetcher - ERROR - Failed to fetch historical data: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by ProxyError('Cannot connect to proxy.', ConnectionResetError(54, 'Connection reset by peer')))
+2025-08-26 10:58:30,916 - src.trading.prediction_service - ERROR - 获取历史数据失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by ProxyError('Cannot connect to proxy.', ConnectionResetError(54, 'Connection reset by peer')))
+2025-08-26 10:58:30,916 - src.trading.prediction_service - ERROR - ❌ 预测失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by ProxyError('Cannot connect to proxy.', ConnectionResetError(54, 'Connection reset by peer')))
+2025-08-26 10:58:30,917 - src.scheduler.prediction_scheduler - ERROR - ❌ 预测周期执行失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by ProxyError('Cannot connect to proxy.', ConnectionResetError(54, 'Connection reset by peer')))
+2025-08-26 11:08:31,582 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 11:08:31,590 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 11:08:37,050 - src.data.okx_fetcher - ERROR - Failed to fetch historical data: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2c2b40>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:08:37,050 - src.trading.prediction_service - ERROR - 获取历史数据失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2c2b40>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:08:37,050 - src.trading.prediction_service - ERROR - ❌ 预测失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2c2b40>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:08:37,050 - src.scheduler.prediction_scheduler - ERROR - ❌ 预测周期执行失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2c2b40>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:18:37,358 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 11:18:37,359 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 11:18:42,660 - src.data.okx_fetcher - ERROR - Failed to fetch historical data: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2ea5a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:18:42,660 - src.trading.prediction_service - ERROR - 获取历史数据失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2ea5a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:18:42,660 - src.trading.prediction_service - ERROR - ❌ 预测失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2ea5a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:18:42,660 - src.scheduler.prediction_scheduler - ERROR - ❌ 预测周期执行失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x15e2ea5a0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 11:18:51,458 - __main__ - INFO - 收到信号 2，正在优雅关闭系统...
+2025-08-26 11:18:51,459 - __main__ - INFO - 🛑 正在停止持续预测系统
+2025-08-26 11:18:51,459 - src.scheduler.prediction_scheduler - INFO - 🛑 停止持续预测调度器
+2025-08-26 11:18:51,700 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已停止
+2025-08-26 11:18:51,701 - __main__ - INFO - ✅ 系统已停止
+2025-08-26 14:48:24,582 - __main__ - INFO - 🚀 初始化Kronos持续预测系统
+2025-08-26 14:48:24,612 - src.models.kronos_model - INFO - 使用模型路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/kronos-small
+2025-08-26 14:48:24,612 - src.models.kronos_model - INFO - 使用tokenizer路径: /Users/littlecarp/PycharmProjects/OKX-Kronos/models/tokenizer
+2025-08-26 14:48:24,612 - src.models.kronos_model - INFO - 正在加载Kronos模型...
+2025-08-26 14:48:25,239 - src.models.kronos_model - INFO - ✅ Kronos模型加载成功
+2025-08-26 14:48:25,240 - src.models.kronos_model - INFO - 🖥️ 使用计算设备: mps
+2025-08-26 14:48:25,240 - src.trading.prediction_service - INFO - ✅ 预测服务初始化完成
+2025-08-26 14:48:25,242 - src.scheduler.prediction_scheduler - INFO - ✅ 数据库初始化完成
+2025-08-26 14:48:25,242 - src.scheduler.prediction_scheduler - INFO - ✅ 预测调度器初始化完成
+2025-08-26 14:48:25,242 - __main__ - INFO - ✅ 系统初始化完成
+2025-08-26 14:48:25,242 - __main__ - INFO - 🎯 启动持续预测系统
+2025-08-26 14:48:25,242 - src.scheduler.prediction_scheduler - INFO - 🚀 启动持续预测调度器
+2025-08-26 14:48:25,242 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 14:48:25,242 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 14:48:25,918 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 14:48:25,918 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 14:48:25,918 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 14:48:43,797 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 14:48:43,798 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 14:48:43,801 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 14:48:43,802 - src.scheduler.prediction_scheduler - INFO - ✅ 调度器已启动，每 10 分钟更新一次预测
+2025-08-26 14:48:43,802 - __main__ - INFO - ✅ 系统启动成功，开始持续预测
+2025-08-26 14:58:26,007 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 14:58:26,008 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 14:58:26,681 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 14:58:26,682 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 14:58:26,682 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 14:58:29,385 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 14:58:29,386 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 14:58:29,388 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 15:08:29,549 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 15:08:29,552 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 15:08:31,067 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 15:08:31,068 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 15:08:31,068 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 15:08:33,609 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 15:08:33,610 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 15:08:33,616 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 15:18:33,924 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 15:18:33,929 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 15:18:39,409 - src.data.okx_fetcher - ERROR - Failed to fetch historical data: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x17af333b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 15:18:39,409 - src.trading.prediction_service - ERROR - 获取历史数据失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x17af333b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 15:18:39,410 - src.trading.prediction_service - ERROR - ❌ 预测失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x17af333b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 15:18:39,410 - src.scheduler.prediction_scheduler - ERROR - ❌ 预测周期执行失败: HTTPSConnectionPool(host='www.okx.com', port=443): Max retries exceeded with url: /api/v5/market/candles?instId=BTC-USDT-SWAP&bar=5m&limit=300 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x17af333b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-26 15:28:39,707 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 15:28:39,709 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 15:28:40,260 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 15:28:40,261 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 15:28:40,261 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 15:28:42,693 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 15:28:42,694 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 15:28:42,697 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 15:38:43,076 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 15:38:43,081 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 15:38:43,789 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 15:38:43,790 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 15:38:43,790 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 15:38:46,633 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 15:38:46,633 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 15:38:46,635 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 15:48:46,878 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 15:48:46,882 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 15:48:47,923 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 15:48:47,924 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 15:48:47,924 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 15:48:50,310 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 15:48:50,310 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 15:48:50,315 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 15:58:50,686 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 15:58:50,690 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 15:58:51,187 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 15:58:51,189 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 15:58:51,189 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 15:58:53,685 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 15:58:53,686 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 15:58:53,689 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 16:08:54,045 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 16:08:54,049 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 16:08:55,221 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 16:08:55,222 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 16:08:55,222 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 16:08:57,761 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 16:08:57,761 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 16:08:57,763 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 16:18:58,030 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 16:18:58,032 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 16:18:58,673 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 16:18:58,675 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 16:18:58,675 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 16:19:01,459 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 16:19:01,459 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 16:19:01,462 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 16:29:01,790 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 16:29:01,799 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 16:29:02,404 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 16:29:02,405 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 16:29:02,405 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 16:29:05,086 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 16:29:05,086 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 16:29:05,090 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 16:39:05,468 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 16:39:05,472 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 16:39:07,008 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 16:39:07,009 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 16:39:07,009 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 16:39:09,441 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 16:39:09,442 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 16:39:09,444 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 16:49:09,787 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 16:49:09,791 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 16:49:10,355 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 16:49:10,356 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 16:49:10,356 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 16:49:13,274 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 16:49:13,274 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 16:49:13,277 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 16:59:13,498 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 16:59:13,499 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 16:59:14,240 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 16:59:14,241 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 16:59:14,241 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 16:59:17,868 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 16:59:17,868 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 16:59:17,871 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 17:09:18,129 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 17:09:18,135 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 17:09:18,792 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 17:09:18,795 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 17:09:18,795 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 17:09:21,498 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 17:09:21,499 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 17:09:21,502 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 17:19:21,923 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 17:19:21,933 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 17:19:22,629 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 17:19:22,631 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 17:19:22,631 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 17:19:25,253 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 17:19:25,254 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 17:19:25,257 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库
+2025-08-26 17:29:25,435 - src.scheduler.prediction_scheduler - INFO - 🔄 开始新的预测周期
+2025-08-26 17:29:25,447 - src.trading.prediction_service - INFO - 开始获取预测，回看48小时，预测2小时
+2025-08-26 17:29:26,142 - src.trading.prediction_service - INFO - 获取到 300 条历史数据
+2025-08-26 17:29:26,144 - src.models.kronos_model - INFO - 开始进行Kronos预测，预测长度: 24
+2025-08-26 17:29:26,144 - src.models.kronos_model - INFO - 🌡️ 采样参数 - 温度: 0.8, Top-p: 0.9, 采样次数: 3
+2025-08-26 17:29:28,845 - src.models.kronos_model - INFO - ✅ Kronos预测完成
+2025-08-26 17:29:28,845 - src.trading.prediction_service - INFO - ✅ 预测完成
+2025-08-26 17:29:28,847 - src.scheduler.prediction_scheduler - INFO - ✅ 预测结果已保存到数据库

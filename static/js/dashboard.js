@@ -6,23 +6,26 @@ class KronosDashboard {
         this.currentPage = 1;
         this.totalPages = 1;
         this.refreshInterval = null;
-        
+        this.positionsRefreshInterval = null;
+        this.predictionsRefreshInterval = null;
+
         this.init();
     }
     
     init() {
         // 初始化图表
         this.initChart();
-        
+
         // 加载初始数据
         this.loadSystemStatus();
         this.loadLatestPrediction();
         this.loadChartData(24);
         this.loadPredictions(1);
-        
+        this.loadPositions();
+
         // 设置自动刷新
         this.startAutoRefresh();
-        
+
         console.log('Kronos Dashboard initialized');
     }
     
@@ -333,22 +336,187 @@ class KronosDashboard {
     }
     
     startAutoRefresh() {
-        // 每30秒刷新一次数据
-        this.refreshInterval = setInterval(() => {
+        // 每30秒刷新持仓信息
+        this.positionsRefreshInterval = setInterval(() => {
+            this.loadPositions();
+        }, 30000);
+
+        // 每10分钟刷新预测信息
+        this.predictionsRefreshInterval = setInterval(() => {
             this.loadSystemStatus();
             this.loadLatestPrediction();
-        }, 30000);
+            this.loadChartData(24);
+            this.loadPredictions(1);
+        }, 600000); // 10分钟 = 600000毫秒
+
+        console.log('自动刷新已启动: 持仓30秒, 预测10分钟');
     }
-    
+
     stopAutoRefresh() {
+        if (this.positionsRefreshInterval) {
+            clearInterval(this.positionsRefreshInterval);
+            this.positionsRefreshInterval = null;
+        }
+        if (this.predictionsRefreshInterval) {
+            clearInterval(this.predictionsRefreshInterval);
+            this.predictionsRefreshInterval = null;
+        }
         if (this.refreshInterval) {
             clearInterval(this.refreshInterval);
             this.refreshInterval = null;
         }
+        console.log('自动刷新已停止');
+    }
+
+    // 持仓信息相关方法
+    loadPositions() {
+        fetch('/api/positions')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.updatePositionsDisplay(data.data);
+                } else {
+                    console.error('获取持仓信息失败:', data.error);
+                    this.showPositionsError(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('获取持仓信息异常:', error);
+                this.showPositionsError('网络连接失败');
+            });
+    }
+
+    updatePositionsDisplay(data) {
+        const positions = data.positions || [];
+        const timestamp = data.timestamp;
+
+        // 更新持仓数量
+        document.getElementById('positions-count').textContent = positions.length;
+
+        // 更新最后更新时间
+        const lastUpdateElement = document.getElementById('positions-last-update');
+        if (timestamp) {
+            const updateTime = new Date(timestamp).toLocaleTimeString();
+            lastUpdateElement.innerHTML = `<i class="fas fa-clock me-1"></i>最后更新: ${updateTime}`;
+        }
+
+        // 计算总计数据
+        let totalUpl = 0;
+        let totalMargin = 0;
+        let totalNotional = 0;
+
+        positions.forEach(pos => {
+            totalUpl += pos.upl || 0;
+            totalMargin += pos.imr || 0;
+            totalNotional += (pos.pos || 0) * (pos.markPx || pos.avgPx || 0);
+        });
+
+        const totalUplRatio = totalNotional > 0 ? (totalUpl / totalNotional) * 100 : 0;
+
+        // 更新概览卡片
+        document.getElementById('total-positions').textContent = positions.length;
+        document.getElementById('total-upl').textContent = this.formatCurrency(totalUpl);
+        document.getElementById('total-upl').className = totalUpl >= 0 ? 'text-success' : 'text-danger';
+        document.getElementById('total-margin').textContent = this.formatCurrency(totalMargin);
+        document.getElementById('total-upl-ratio').textContent = this.formatPercentage(totalUplRatio);
+        document.getElementById('total-upl-ratio').className = totalUplRatio >= 0 ? 'text-success' : 'text-danger';
+
+        // 更新持仓表格
+        this.updatePositionsTable(positions);
+    }
+
+    updatePositionsTable(positions) {
+        const tbody = document.getElementById('positions-tbody');
+
+        if (positions.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="9" class="text-center text-muted">
+                        <i class="fas fa-inbox me-2"></i>
+                        暂无持仓
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const rows = positions.map(pos => {
+            const sideDisplay = {
+                'long': '<span class="badge bg-success">多头</span>',
+                'short': '<span class="badge bg-danger">空头</span>',
+                'net': '<span class="badge bg-info">净持仓</span>'
+            }[pos.posSide] || pos.posSide;
+
+            const uplClass = (pos.upl || 0) >= 0 ? 'text-success' : 'text-danger';
+            const uplRatioClass = (pos.uplRatio || 0) >= 0 ? 'text-success' : 'text-danger';
+
+            return `
+                <tr>
+                    <td><strong>${pos.instId}</strong></td>
+                    <td>${sideDisplay}</td>
+                    <td>${this.formatNumber(pos.pos)}</td>
+                    <td>$${this.formatNumber(pos.avgPx)}</td>
+                    <td>$${this.formatNumber(pos.markPx || pos.last)}</td>
+                    <td class="${uplClass}">$${this.formatNumber(pos.upl)}</td>
+                    <td class="${uplRatioClass}">${this.formatPercentage((pos.uplRatio || 0) * 100)}</td>
+                    <td>$${this.formatNumber(pos.imr)}</td>
+                    <td><span class="badge bg-secondary">${pos.lever}x</span></td>
+                </tr>
+            `;
+        }).join('');
+
+        tbody.innerHTML = rows;
+    }
+
+    showPositionsError(error) {
+        const tbody = document.getElementById('positions-tbody');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="text-center text-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    获取持仓信息失败: ${error}
+                </td>
+            </tr>
+        `;
+
+        // 重置概览数据
+        document.getElementById('positions-count').textContent = '0';
+        document.getElementById('total-positions').textContent = '0';
+        document.getElementById('total-upl').textContent = '$0.00';
+        document.getElementById('total-margin').textContent = '$0.00';
+        document.getElementById('total-upl-ratio').textContent = '0.00%';
+    }
+
+    // 工具方法
+    formatCurrency(value) {
+        if (value === null || value === undefined) return '$0.00';
+        return '$' + Number(value).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    formatNumber(value) {
+        if (value === null || value === undefined) return '0.00';
+        return Number(value).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 4
+        });
+    }
+
+    formatPercentage(value) {
+        if (value === null || value === undefined) return '0.00%';
+        return Number(value).toFixed(2) + '%';
     }
 }
 
 // 全局函数
+function refreshPositions() {
+    if (window.dashboard) {
+        window.dashboard.loadPositions();
+    }
+}
+
 function updateChart(hours) {
     // 更新按钮状态
     document.querySelectorAll('.btn-group .btn').forEach(btn => {
@@ -364,6 +532,7 @@ function updateChart(hours) {
 let dashboard;
 document.addEventListener('DOMContentLoaded', function() {
     dashboard = new KronosDashboard();
+    window.dashboard = dashboard; // 设置为全局变量
 });
 
 // 页面卸载时停止自动刷新
