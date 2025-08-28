@@ -200,7 +200,7 @@ class Kronos(nn.Module, PyTorchModelHubMixin):
 class KronosPredictor:
     """Kronos预测器，用于BTC-USDT永续合约价格预测"""
 
-    def __init__(self, model_path: str = None, tokenizer_path: str = None, device: str = "auto"):
+    def __init__(self, model_path: str = None, tokenizer_path: str = None, device: str = "auto", auto_download: bool = True):
         """
         初始化Kronos预测器
 
@@ -208,6 +208,7 @@ class KronosPredictor:
             model_path: 模型路径，默认使用项目中的kronos-small
             tokenizer_path: tokenizer路径，默认使用项目中的tokenizer
             device: 计算设备，auto/cpu/cuda/mps
+            auto_download: 是否自动下载缺失的模型
         """
         self.logger = logging.getLogger(__name__)
         self.device = self._get_optimal_device(device)
@@ -221,11 +222,14 @@ class KronosPredictor:
         self.model_path = Path(model_path)
         self.tokenizer_path = Path(tokenizer_path)
 
-        # 检查模型文件是否存在
-        if not self.model_path.exists():
-            raise FileNotFoundError(f"模型路径不存在: {self.model_path}")
-        if not self.tokenizer_path.exists():
-            raise FileNotFoundError(f"Tokenizer路径不存在: {self.tokenizer_path}")
+        # 检查模型文件是否存在，如果不存在且允许自动下载，则下载
+        if not self._check_models_exist():
+            if auto_download:
+                self.logger.info("📥 模型文件不存在，开始自动下载...")
+                if not self._download_models():
+                    raise FileNotFoundError(f"模型下载失败，请检查网络连接")
+            else:
+                raise FileNotFoundError(f"模型路径不存在: {self.model_path}, Tokenizer路径不存在: {self.tokenizer_path}")
 
         self.logger.info(f"使用模型路径: {self.model_path}")
         self.logger.info(f"使用tokenizer路径: {self.tokenizer_path}")
@@ -242,6 +246,39 @@ class KronosPredictor:
         self.time_cols = ['minute', 'hour', 'weekday', 'day', 'month']
 
         self.logger.info(f"🖥️ 使用计算设备: {self.device}")
+
+    def _check_models_exist(self) -> bool:
+        """检查模型文件是否存在"""
+        model_exists = (self.model_path.exists() and
+                       (self.model_path / "config.json").exists() and
+                       (self.model_path / "model.safetensors").exists())
+
+        tokenizer_exists = (self.tokenizer_path.exists() and
+                           (self.tokenizer_path / "config.json").exists() and
+                           (self.tokenizer_path / "model.safetensors").exists())
+
+        return model_exists and tokenizer_exists
+
+    def _download_models(self) -> bool:
+        """下载模型文件"""
+        try:
+            # 导入下载函数
+            from .download_models import download_kronos_models
+
+            # 执行下载，传入models目录路径
+            models_dir = self.model_path.parent
+            success = download_kronos_models(str(models_dir))
+
+            if success:
+                self.logger.info("✅ 模型下载完成")
+                return True
+            else:
+                self.logger.error("❌ 模型下载失败")
+                return False
+
+        except Exception as e:
+            self.logger.error(f"❌ 模型下载异常: {e}")
+            return False
 
     def _get_optimal_device(self, device: str) -> str:
         """获取最优计算设备"""

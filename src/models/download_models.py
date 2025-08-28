@@ -2,18 +2,27 @@
 下载Kronos预训练模型
 """
 import os
+from pathlib import Path
 from huggingface_hub import snapshot_download
 
-def download_kronos_models():
+def download_kronos_models(models_dir: str = None):
     """下载Kronos预训练模型"""
-    models_dir = "../../models"
-    os.makedirs(models_dir, exist_ok=True)
+    if models_dir is None:
+        # 获取项目根目录
+        current_file = Path(__file__).resolve()
+        project_root = current_file.parent.parent.parent  # src/models/download_models.py -> project_root
+        models_dir = project_root / "models"
+    else:
+        models_dir = Path(models_dir)
+
+    models_dir.mkdir(parents=True, exist_ok=True)
+    print(f"📁 模型将下载到: {models_dir}")
 
     print("正在下载Kronos Tokenizer...")
     try:
         tokenizer_path = snapshot_download(
             repo_id="NeoQuasar/Kronos-Tokenizer-base",
-            local_dir=os.path.join(models_dir, "tokenizer"),
+            local_dir=str(models_dir / "tokenizer"),
             local_dir_use_symlinks=False
         )
         print(f"✅ Tokenizer下载完成: {tokenizer_path}")
@@ -25,7 +34,7 @@ def download_kronos_models():
     try:
         model_path = snapshot_download(
             repo_id="NeoQuasar/Kronos-small",
-            local_dir=os.path.join(models_dir, "kronos-small"),
+            local_dir=str(models_dir / "kronos-small"),
             local_dir_use_symlinks=False
         )
         print(f"✅ 模型下载完成: {model_path}")

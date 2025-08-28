@@ -290,7 +290,7 @@ class KronosLauncher:
             from download_models import download_kronos_models
 
             # 执行下载
-            success = download_kronos_models()
+            success = download_kronos_models(str(models_dir))
             if success:
                 self.logger.info("✅ Kronos模型下载完成")
                 print("✅ 模型下载完成！")
