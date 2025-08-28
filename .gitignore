@@ -140,6 +140,10 @@ logs/
 data/*.db
 data/*.db-journal
 config/.env
+
+# Kronos模型文件（会自动下载）
+models/kronos-small/
+models/tokenizer/
 models/*/pytorch_model.bin
 models/*/model.safetensors
 models/*/.cache/

@@ -310,25 +310,43 @@ class KronosMultiPairPredictionService:
 
         while self.is_running:
             try:
+                # 在循环开始时检查是否仍在运行
+                if not self.is_running:
+                    break
+
                 self.logger.info("🎯 开始新一轮预测...")
 
                 # 并发预测所有交易对
-                with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-                    futures = [
-                        executor.submit(self._predict_single_instrument, instrument)
-                        for instrument in self.instruments
-                    ]
+                executor = None
+                try:
+                    executor = ThreadPoolExecutor(max_workers=self.max_workers)
+                    futures = []
+
+                    # 只有在服务运行时才提交任务
+                    if self.is_running:
+                        futures = [
+                            executor.submit(self._predict_single_instrument, instrument)
+                            for instrument in self.instruments
+                        ]
 
                     successful_predictions = 0
                     for future in as_completed(futures):
+                        # 在处理结果前再次检查运行状态
+                        if not self.is_running:
+                            break
                         result = future.result()
                         if result['success']:
                             successful_predictions += 1
 
-                self.stats['predictions_generated'] += successful_predictions
-                self.stats['last_prediction_time'] = datetime.now()
+                    if self.is_running:  # 只有在服务运行时才更新统计
+                        self.stats['predictions_generated'] += successful_predictions
+                        self.stats['last_prediction_time'] = datetime.now()
+                        self.logger.info(f"✅ 本轮预测完成，成功{successful_predictions}/{len(self.instruments)}个")
 
-                self.logger.info(f"✅ 本轮预测完成，成功{successful_predictions}/{len(self.instruments)}个")
+                finally:
+                    # 确保executor被正确关闭
+                    if executor:
+                        executor.shutdown(wait=True)
 
                 # 等待下一轮（分段等待，便于响应停止信号）
                 wait_time = self.prediction_interval * 60
@@ -341,7 +359,11 @@ class KronosMultiPairPredictionService:
                 self.logger.error(f"❌ 预测循环异常: {e}")
                 if self.is_running:  # 只有在服务运行时才重试
                     self.logger.info("⏳ 等待60秒后重试...")
-                    time.sleep(60)
+                    # 分段等待，便于响应停止信号
+                    for _ in range(60):
+                        if not self.is_running:
+                            break
+                        time.sleep(1)
 
         self.logger.info("🎯 预测循环线程已停止")
     

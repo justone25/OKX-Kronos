@@ -40,6 +40,11 @@ class KronosLauncher:
         """启动Kronos多币种预测与验证服务"""
         print_banner("🎯 Kronos多币种预测与验证", f"模式: {mode}")
 
+        # 检查并下载模型
+        if not self._check_and_download_models():
+            self.logger.error("❌ 模型检查/下载失败，无法启动预测服务")
+            return 1
+
         cmd = [sys.executable, "examples/kronos_multi_prediction.py", "--mode", mode]
 
         # 添加参数
@@ -256,16 +261,60 @@ class KronosLauncher:
             print(f"❌ 查询预测状态失败: {e}")
             return False
     
+    def _check_and_download_models(self) -> bool:
+        """检查模型是否存在，不存在则下载"""
+        try:
+            models_dir = self.project_root / "models"
+            kronos_model_path = models_dir / "kronos-small"
+            tokenizer_path = models_dir / "tokenizer"
+
+            # 检查模型是否存在
+            model_exists = (kronos_model_path.exists() and
+                          (kronos_model_path / "config.json").exists() and
+                          (kronos_model_path / "model.safetensors").exists())
+
+            tokenizer_exists = (tokenizer_path.exists() and
+                              (tokenizer_path / "config.json").exists() and
+                              (tokenizer_path / "model.safetensors").exists())
+
+            if model_exists and tokenizer_exists:
+                self.logger.info("✅ Kronos模型和Tokenizer已存在")
+                return True
+
+            # 需要下载模型
+            self.logger.info("📥 Kronos模型不存在，开始下载...")
+            print("📥 正在下载Kronos预训练模型，这可能需要几分钟...")
+
+            # 导入下载模块
+            sys.path.insert(0, str(self.project_root / "src" / "models"))
+            from download_models import download_kronos_models
+
+            # 执行下载
+            success = download_kronos_models()
+            if success:
+                self.logger.info("✅ Kronos模型下载完成")
+                print("✅ 模型下载完成！")
+                return True
+            else:
+                self.logger.error("❌ Kronos模型下载失败")
+                print("❌ 模型下载失败，请检查网络连接")
+                return False
+
+        except Exception as e:
+            self.logger.error(f"❌ 模型检查/下载异常: {e}")
+            print(f"❌ 模型检查/下载异常: {e}")
+            return False
+
     def _run_command(self, cmd: List[str]) -> int:
         """运行命令"""
         try:
             # 切换到项目根目录
             os.chdir(self.project_root)
-            
+
             # 运行命令
             result = subprocess.run(cmd, cwd=self.project_root)
             return result.returncode
-            
+
         except KeyboardInterrupt:
             print("\n⚠️ 用户中断")
             return 1
