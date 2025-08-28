@@ -3,10 +3,13 @@
 """
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from dotenv import load_dotenv
 
-# 加载环境变量
-load_dotenv('config/.env')
+# 获取项目根目录并加载环境变量
+project_root = Path(__file__).parent.parent.parent
+env_path = project_root / 'config' / '.env'
+load_dotenv(env_path)
 
 @dataclass
 class OKXConfig:

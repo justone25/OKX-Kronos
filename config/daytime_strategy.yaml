@@ -1,0 +1,124 @@
+# 白天震荡策略配置文件
+
+strategy:
+  name: "daytime_oscillation"
+  description: "比特币白天震荡策略 - 基于8:00-20:00时段波动特点"
+  version: "1.0.0"
+  
+  # 时间设置
+  timing:
+    trading_start_hour: 8      # 开始交易时间
+    trading_end_hour: 19       # 结束交易时间
+    force_close_hour: 19       # 强制平仓时间
+    force_close_minute: 30     # 强制平仓分钟
+    timezone: "UTC"            # 时区设置
+  
+  # 震荡区间设置
+  oscillation:
+    range_calculation_hours: 24    # 区间计算周期（小时）
+    range_shrink_factor: 0.6       # 白天区间缩小系数
+    entry_threshold: 0.1           # 入场阈值（距离边界10%）
+    breakout_threshold: 0.2        # 突破阈值（超出区间20%）
+    range_update_interval: 1       # 区间更新间隔（小时）
+  
+  # 信号权重配置
+  signal_weights:
+    technical: 0.40        # 技术指标权重
+    ai_prediction: 0.35    # AI预测权重
+    kronos_prediction: 0.25 # Kronos预测权重
+  
+  # 风险管理设置
+  risk_management:
+    max_position_ratio: 0.30       # 最大总仓位比例
+    max_single_trade: 0.10         # 单笔最大交易比例
+    daily_loss_limit: 0.05         # 日亏损限制
+    stop_loss_pct: 0.02            # 止损比例
+    take_profit_pct: 0.015         # 止盈比例
+    max_consecutive_losses: 5      # 最大连续亏损次数
+    min_account_balance: 100       # 最小账户余额（USDT）
+    min_trade_amount: 10           # 最小交易金额（USDT）
+  
+  # AI预测过滤设置
+  ai_filters:
+    min_confidence: 0.7            # 最小置信度
+    prediction_horizon_hours: 4    # 预测时间窗口（小时）
+    enable_ai_filter: true         # 是否启用AI过滤
+    enable_kronos_filter: true     # 是否启用Kronos过滤
+  
+  # 技术指标设置
+  technical_indicators:
+    rsi_period: 14                 # RSI周期
+    rsi_oversold: 30              # RSI超卖阈值
+    rsi_overbought: 70            # RSI超买阈值
+    macd_fast: 12                 # MACD快线周期
+    macd_slow: 26                 # MACD慢线周期
+    macd_signal: 9                # MACD信号线周期
+    bollinger_period: 20          # 布林带周期
+    bollinger_std: 2              # 布林带标准差倍数
+  
+  # 交易设置
+  trading:
+    instrument_id: "BTC-USDT-SWAP"  # 交易品种
+    trading_mode: "isolated"        # 交易模式（isolated/cross）
+    default_order_type: "market"    # 默认订单类型
+    slippage_tolerance: 0.001       # 滑点容忍度
+    max_retry_attempts: 3           # 最大重试次数
+    retry_delay_seconds: 5          # 重试延迟（秒）
+  
+  # 监控和日志设置
+  monitoring:
+    log_level: "INFO"               # 日志级别
+    enable_trade_log: true          # 启用交易日志
+    enable_performance_log: true    # 启用性能日志
+    log_file_path: "logs/daytime_strategy.log"
+    stats_update_interval: 300      # 统计更新间隔（秒）
+    position_check_interval: 60     # 持仓检查间隔（秒）
+  
+  # 回测设置
+  backtest:
+    start_date: "2024-01-01"        # 回测开始日期
+    end_date: "2024-12-31"          # 回测结束日期
+    initial_balance: 10000          # 初始资金（USDT）
+    commission_rate: 0.0005         # 手续费率
+    enable_slippage: true           # 启用滑点模拟
+    slippage_rate: 0.0001          # 滑点率
+  
+  # 性能目标
+  performance_targets:
+    daily_return_target: 0.01       # 日收益目标（1%）
+    monthly_return_target: 0.20     # 月收益目标（20%）
+    max_drawdown_limit: 0.05        # 最大回撤限制（5%）
+    min_sharpe_ratio: 2.0           # 最小夏普比率
+    min_win_rate: 0.60              # 最小胜率
+  
+  # 紧急设置
+  emergency:
+    enable_circuit_breaker: true    # 启用熔断机制
+    circuit_breaker_loss: 0.10      # 熔断亏损阈值（10%）
+    emergency_stop_conditions:      # 紧急停止条件
+      - "high_volatility"           # 高波动率
+      - "low_liquidity"             # 低流动性
+      - "system_error"              # 系统错误
+    auto_restart_after_hours: 1     # 自动重启间隔（小时）
+  
+  # 通知设置
+  notifications:
+    enable_email: false             # 启用邮件通知
+    enable_webhook: false           # 启用Webhook通知
+    notify_on_trade: true           # 交易时通知
+    notify_on_error: true           # 错误时通知
+    notify_on_daily_summary: true   # 日总结通知
+    
+# 环境配置
+environment:
+  demo_mode: false                  # 是否为模拟模式
+  api_timeout: 30                   # API超时时间（秒）
+  max_concurrent_requests: 5        # 最大并发请求数
+  rate_limit_per_second: 10         # 每秒请求限制
+  
+# 数据库配置
+database:
+  enable_database: true             # 启用数据库记录
+  db_path: "data/strategy_data.db"  # 数据库路径
+  backup_interval_hours: 24         # 备份间隔（小时）
+  max_records_per_table: 100000     # 每表最大记录数

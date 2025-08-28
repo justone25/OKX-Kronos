@@ -24,13 +24,25 @@ class PredictionDashboard:
         """
         self.logger = logging.getLogger(__name__)
         self.db_path = Path(db_path)
-        
+
+        # 如果数据库不存在，创建目录但不抛出异常
         if not self.db_path.exists():
-            raise FileNotFoundError(f"数据库文件不存在: {self.db_path}")
+            self.logger.warning(f"数据库文件不存在: {self.db_path}")
+            self.db_path.parent.mkdir(parents=True, exist_ok=True)
     
     def get_system_status(self) -> Dict[str, Any]:
         """获取系统运行状态"""
         try:
+            # 如果数据库文件不存在，返回默认状态
+            if not self.db_path.exists():
+                return {
+                    "last_prediction": None,
+                    "total_predictions": 0,
+                    "recent_predictions": 0,
+                    "recent_logs": [],
+                    "is_active": False
+                }
+
             conn = sqlite3.connect(self.db_path)
             
             # 获取最新预测时间
@@ -47,14 +59,19 @@ class PredictionDashboard:
             cursor.execute("SELECT COUNT(*) FROM predictions WHERE timestamp > ?", (yesterday,))
             recent_predictions = cursor.fetchone()[0]
             
-            # 获取最新的系统日志
-            cursor.execute("""
-                SELECT level, message, timestamp 
-                FROM system_logs 
-                ORDER BY timestamp DESC 
-                LIMIT 5
-            """)
-            recent_logs = cursor.fetchall()
+            # 获取最新的系统日志（如果表存在）
+            recent_logs = []
+            try:
+                cursor.execute("""
+                    SELECT level, message, timestamp
+                    FROM system_logs
+                    ORDER BY timestamp DESC
+                    LIMIT 5
+                """)
+                recent_logs = cursor.fetchall()
+            except sqlite3.OperationalError:
+                # system_logs表不存在，使用空列表
+                recent_logs = []
             
             conn.close()
             
@@ -76,37 +93,42 @@ class PredictionDashboard:
         """判断系统是否活跃"""
         if not last_prediction:
             return False
-        
+
         try:
             last_time = datetime.fromisoformat(last_prediction)
             time_diff = datetime.now() - last_time
-            return time_diff.total_seconds() < 3600  # 1小时内有预测认为是活跃的
+            # 24小时内有预测认为是活跃的（适应batch模式）
+            return time_diff.total_seconds() < 86400  # 24小时 = 86400秒
         except:
             return False
     
-    def get_prediction_history(self, hours: int = 24) -> pd.DataFrame:
-        """获取预测历史"""
+    def get_prediction_history(self, hours: int = 24, instrument: str = 'BTC-USDT-SWAP') -> pd.DataFrame:
+        """获取预测历史 - 默认获取BTC数据"""
         try:
+            # 如果数据库文件不存在，返回空DataFrame
+            if not self.db_path.exists():
+                return pd.DataFrame()
+
             conn = sqlite3.connect(self.db_path)
-            
+
             cutoff_time = (datetime.now() - timedelta(hours=hours)).isoformat()
-            
+
             query = '''
                 SELECT timestamp, current_price, predicted_price, price_change_pct,
                        trend_direction, volatility, pred_hours
-                FROM predictions 
-                WHERE timestamp > ?
+                FROM predictions
+                WHERE timestamp > ? AND instrument = ?
                 ORDER BY timestamp ASC
             '''
-            
-            df = pd.read_sql_query(query, conn, params=(cutoff_time,))
+
+            df = pd.read_sql_query(query, conn, params=(cutoff_time, instrument))
             conn.close()
-            
+
             if not df.empty:
                 df['timestamp'] = pd.to_datetime(df['timestamp'])
-            
+
             return df
-            
+
         except Exception as e:
             self.logger.error(f"❌ 获取预测历史失败: {e}")
             return pd.DataFrame()
@@ -114,6 +136,15 @@ class PredictionDashboard:
     def get_accuracy_metrics(self, hours: int = 24) -> Dict[str, float]:
         """获取预测准确性指标"""
         try:
+            # 如果数据库文件不存在，返回默认指标
+            if not self.db_path.exists():
+                return {
+                    "total_predictions": 0,
+                    "accuracy_rate": 0.0,
+                    "avg_error": 0.0,
+                    "success_rate": 0.0
+                }
+
             conn = sqlite3.connect(self.db_path)
             
             cutoff_time = (datetime.now() - timedelta(hours=hours)).isoformat()

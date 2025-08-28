@@ -5,6 +5,7 @@ class KronosDashboard {
         this.chart = null;
         this.currentPage = 1;
         this.totalPages = 1;
+        this.currentInstrument = '';
         this.refreshInterval = null;
         this.positionsRefreshInterval = null;
         this.predictionsRefreshInterval = null;
@@ -20,8 +21,12 @@ class KronosDashboard {
         this.loadSystemStatus();
         this.loadLatestPrediction();
         this.loadChartData(24);
+        this.loadInstruments();
         this.loadPredictions(1);
         this.loadPositions();
+
+        // 设置事件监听器
+        this.setupEventListeners();
 
         // 设置自动刷新
         this.startAutoRefresh();
@@ -153,39 +158,56 @@ class KronosDashboard {
             
             if (result.success && result.data) {
                 const data = result.data;
-                
+                console.log('Latest prediction data:', data); // 调试信息
+
                 // 更新价格显示
-                document.getElementById('current-price').textContent = 
-                    '$' + data.current_price.toLocaleString('en-US', {
+                document.getElementById('current-price').textContent =
+                    '$' + (data.current_price || 0).toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                     });
                 
-                document.getElementById('predicted-price').textContent = 
-                    '$' + data.predicted_price.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
+                // 更新预测价格，根据预测状态添加标识
+                const predictedPriceElement = document.getElementById('predicted-price');
+                let predictedPriceText = '$' + (data.predicted_price || 0).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                // 根据预测状态添加标识
+                if (data.prediction_status === 'outdated') {
+                    predictedPriceText += ` (${data.prediction_age_hours.toFixed(0)}h前)`;
+                } else if (data.prediction_status === 'none') {
+                    predictedPriceText = '暂无预测';
+                }
+
+                predictedPriceElement.textContent = predictedPriceText;
                 
                 // 更新趋势显示
                 const trendCard = document.getElementById('trend-card');
                 const trendElement = document.getElementById('price-trend');
-                const trendIcon = document.getElementById('trend-icon');
-                
-                const changeText = (data.price_change_pct >= 0 ? '+' : '') + 
+
+                const changeText = (data.price_change_pct >= 0 ? '+' : '') +
                                  data.price_change_pct.toFixed(2) + '%';
-                
-                trendElement.textContent = changeText;
-                
-                if (data.trend_direction === 'UP') {
-                    trendCard.className = 'card status-card text-white trend-up';
-                    trendIcon.className = 'fas fa-arrow-up fa-2x';
-                } else if (data.trend_direction === 'DOWN') {
-                    trendCard.className = 'card status-card text-white trend-down';
-                    trendIcon.className = 'fas fa-arrow-down fa-2x';
-                } else {
-                    trendCard.className = 'card status-card text-white trend-neutral';
-                    trendIcon.className = 'fas fa-arrow-right fa-2x';
+
+                if (trendElement) {
+                    trendElement.textContent = changeText;
+                }
+
+                if (trendCard) {
+                    if (data.prediction_status === 'none') {
+                        trendCard.className = 'card status-card text-white bg-secondary';
+                        trendElement.textContent = '暂无预测';
+                    } else if (data.prediction_status === 'outdated') {
+                        // 过期预测用橙色显示
+                        trendCard.className = 'card status-card text-white bg-warning';
+                    } else if (data.trend_direction === 'up' || data.trend_direction === 'UP') {
+                        trendCard.className = 'card status-card text-white bg-success';
+                    } else if (data.trend_direction === 'down' || data.trend_direction === 'DOWN') {
+                        trendCard.className = 'card status-card text-white bg-danger';
+                    } else {
+                        trendCard.className = 'card status-card text-white bg-secondary';
+                    }
                 }
             }
         } catch (error) {
@@ -213,20 +235,62 @@ class KronosDashboard {
         }
     }
     
+    async loadInstruments() {
+        try {
+            const response = await fetch('/api/instruments');
+            const result = await response.json();
+
+            if (result.success) {
+                const instruments = result.data;
+                const select = document.getElementById('instrument-filter');
+
+                // 清空现有选项（保留"全部"选项）
+                select.innerHTML = '<option value="">全部</option>';
+
+                // 添加交易对选项
+                instruments.forEach(instrument => {
+                    const option = document.createElement('option');
+                    option.value = instrument;
+                    option.textContent = instrument;
+                    select.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Error loading instruments:', error);
+        }
+    }
+
+    setupEventListeners() {
+        // 交易对过滤器事件监听
+        const instrumentFilter = document.getElementById('instrument-filter');
+        if (instrumentFilter) {
+            instrumentFilter.addEventListener('change', (e) => {
+                this.currentInstrument = e.target.value;
+                this.currentPage = 1; // 重置到第一页
+                this.loadPredictions(1);
+            });
+        }
+    }
+
     async loadPredictions(page = 1) {
         try {
-            const response = await fetch(`/api/predictions?page=${page}&per_page=10`);
+            let url = `/api/predictions?page=${page}&per_page=10`;
+            if (this.currentInstrument) {
+                url += `&instrument=${encodeURIComponent(this.currentInstrument)}`;
+            }
+
+            const response = await fetch(url);
             const result = await response.json();
-            
+
             if (result.success) {
                 const { predictions, pagination } = result.data;
-                
+
                 this.currentPage = pagination.page;
                 this.totalPages = pagination.pages;
-                
+
                 // 更新表格
                 this.updatePredictionsTable(predictions);
-                
+
                 // 更新分页
                 this.updatePagination(pagination);
             }
@@ -237,11 +301,11 @@ class KronosDashboard {
     
     updatePredictionsTable(predictions) {
         const tbody = document.getElementById('predictions-table');
-        
+
         if (predictions.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="text-center text-muted">
+                    <td colspan="9" class="text-center text-muted">
                         <i class="fas fa-inbox me-2"></i>
                         暂无预测数据
                     </td>
@@ -249,38 +313,122 @@ class KronosDashboard {
             `;
             return;
         }
-        
+
         tbody.innerHTML = predictions.map(pred => {
             const timestamp = new Date(pred.timestamp).toLocaleString('zh-CN');
-            const currentPrice = '$' + pred.current_price.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-            const predictedPrice = '$' + pred.predicted_price.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-            
+
+            // 格式化价格显示，根据价格大小调整小数位数
+            const formatPrice = (price) => {
+                if (price >= 1000) {
+                    return '$' + price.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                } else if (price >= 1) {
+                    return '$' + price.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 4
+                    });
+                } else {
+                    return '$' + price.toLocaleString('en-US', {
+                        minimumFractionDigits: 4,
+                        maximumFractionDigits: 6
+                    });
+                }
+            };
+
+            const currentPrice = formatPrice(pred.current_price);
+            const predictedPrice = formatPrice(pred.predicted_price);
+
             const changeClass = pred.price_change_pct >= 0 ? 'price-change-positive' : 'price-change-negative';
             const changeText = (pred.price_change_pct >= 0 ? '+' : '') + pred.price_change_pct.toFixed(2) + '%';
-            
-            const trendClass = pred.trend_direction === 'UP' ? 'trend-up-indicator' : 
+
+            const trendClass = pred.trend_direction === 'UP' ? 'trend-up-indicator' :
                               pred.trend_direction === 'DOWN' ? 'trend-down-indicator' : 'trend-neutral-indicator';
-            
+
             const params = `
                 <span class="param-badge">T:${pred.temperature}</span>
                 <span class="param-badge">P:${pred.top_p}</span>
                 <span class="param-badge">N:${pred.sample_count}</span>
             `;
-            
+
+            // 简化交易对显示
+            const instrumentDisplay = pred.instrument ? pred.instrument.replace('-USDT-SWAP', '') : 'N/A';
+
+            // 处理验证结果显示
+            let validationDisplay = '<span class="text-muted">待验证</span>';
+            if (pred.validation_result) {
+                const validation = pred.validation_result;
+
+                // 验证状态中文映射
+                const statusMap = {
+                    'VALIDATED': '已验证',
+                    'validated': '已验证',
+                    'PENDING': '等待验证',
+                    'pending': '等待验证',
+                    'EXPIRED': '已过期',
+                    'expired': '已过期',
+                    'FAILED': '验证失败',
+                    'failed': '验证失败',
+                    'EXCELLENT': '优秀',
+                    'excellent': '优秀',
+                    'GOOD': '良好',
+                    'good': '良好',
+                    'FAIR': '一般',
+                    'fair': '一般',
+                    'POOR': '较差',
+                    'poor': '较差',
+                    '优秀': '优秀',
+                    '良好': '良好',
+                    '一般': '一般',
+                    '较差': '较差',
+                    '等待验证': '等待验证',
+                    '已验证': '已验证',
+                    '已过期': '已过期',
+                    '验证失败': '验证失败'
+                };
+
+                if (validation.validation_status === 'VALIDATED' || validation.validation_status === 'validated' || validation.validation_status === '已验证') {
+                    const errorPct = Math.abs(validation.price_error_pct || 0);
+                    const directionIcon = validation.direction_correct ?
+                        '<i class="fas fa-check text-success"></i>' :
+                        '<i class="fas fa-times text-danger"></i>';
+
+                    let accuracyClass = 'text-success';
+                    if (errorPct > 5) accuracyClass = 'text-danger';
+                    else if (errorPct > 2) accuracyClass = 'text-warning';
+
+                    validationDisplay = `
+                        <div class="validation-result">
+                            <div>${directionIcon} ${errorPct.toFixed(2)}%</div>
+                            <small class="text-muted">${new Date(validation.validation_timestamp).toLocaleDateString()}</small>
+                        </div>
+                    `;
+                } else {
+                    const statusText = statusMap[validation.validation_status] || validation.validation_status;
+                    let statusClass = 'text-warning';
+
+                    // 根据验证状态设置颜色
+                    if (statusText === '优秀') statusClass = 'text-success';
+                    else if (statusText === '良好') statusClass = 'text-info';
+                    else if (statusText === '一般') statusClass = 'text-warning';
+                    else if (statusText === '较差') statusClass = 'text-danger';
+                    else if (statusText === '验证失败' || statusText === '已过期') statusClass = 'text-danger';
+
+                    validationDisplay = `<span class="${statusClass}">${statusText}</span>`;
+                }
+            }
+
             return `
                 <tr class="fade-in">
+                    <td><span class="badge bg-primary">${instrumentDisplay}</span></td>
                     <td>${timestamp}</td>
                     <td>${currentPrice}</td>
                     <td>${predictedPrice}</td>
                     <td class="${changeClass}">${changeText}</td>
                     <td><span class="trend-indicator ${trendClass}">${pred.trend_direction}</span></td>
                     <td>${pred.volatility.toFixed(2)}</td>
+                    <td>${validationDisplay}</td>
                     <td>${params}</td>
                 </tr>
             `;
@@ -411,7 +559,9 @@ class KronosDashboard {
             totalNotional += (pos.pos || 0) * (pos.markPx || pos.avgPx || 0);
         });
 
-        const totalUplRatio = totalNotional > 0 ? (totalUpl / totalNotional) * 100 : 0;
+        // 修复盈亏比例计算：基于保证金计算盈亏比例
+        // 盈亏比例 = 未实现盈亏 / 保证金 * 100%
+        const totalUplRatio = totalMargin > 0 ? (totalUpl / totalMargin) * 100 : 0;
 
         // 更新概览卡片
         document.getElementById('total-positions').textContent = positions.length;

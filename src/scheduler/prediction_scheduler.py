@@ -1,12 +1,13 @@
 """
 持续预测调度器
 支持定时采样、预测更新和结果存储
+支持SQLite和PostgreSQL数据库
 """
 import time
 import logging
 import threading
 import json
-import sqlite3
+import os
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 from pathlib import Path
@@ -15,37 +16,41 @@ import schedule
 
 from ..trading.prediction_service import PredictionService
 from ..utils.config import OKXConfig, TradingConfig
+from ..utils.database import db_config, get_db_connection, execute_query, init_database
 
 
 class PredictionScheduler:
     """持续预测调度器"""
     
-    def __init__(self, okx_config: OKXConfig, trading_config: TradingConfig, 
-                 db_path: str = "./data/predictions.db", device: str = "cpu"):
+    def __init__(self, okx_config: OKXConfig, trading_config: TradingConfig,
+                 db_path: str = None, device: str = "cpu"):
         """
         初始化调度器
-        
+
         Args:
             okx_config: OKX API配置
             trading_config: 交易配置
-            db_path: 数据库路径
+            db_path: 数据库路径 (可选，优先使用DATABASE_URL环境变量)
             device: 计算设备
         """
         self.logger = logging.getLogger(__name__)
         self.okx_config = okx_config
         self.trading_config = trading_config
         self.device = device
-        self.db_path = Path(db_path)
-        
-        # 创建数据目录
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
+        # 数据库配置
+        if db_path and not os.getenv('DATABASE_URL'):
+            # 如果提供了db_path且没有DATABASE_URL，设置SQLite路径
+            os.environ['SQLITE_DB_PATH'] = str(Path(db_path).absolute())
+            # 创建数据目录
+            Path(db_path).parent.mkdir(parents=True, exist_ok=True)
+
         # 初始化预测服务
         self.prediction_service = PredictionService(okx_config, trading_config, device)
-        
+
         # 初始化数据库
         self._init_database()
-        
+
         # 运行状态
         self.is_running = False
         self.scheduler_thread = None
@@ -64,60 +69,8 @@ class PredictionScheduler:
     def _init_database(self):
         """初始化数据库"""
         try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            
-            # 创建预测结果表
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS predictions (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    timestamp DATETIME NOT NULL,
-                    instrument TEXT NOT NULL,
-                    current_price REAL NOT NULL,
-                    predicted_price REAL NOT NULL,
-                    price_change REAL NOT NULL,
-                    price_change_pct REAL NOT NULL,
-                    predicted_high REAL NOT NULL,
-                    predicted_low REAL NOT NULL,
-                    volatility REAL NOT NULL,
-                    trend_direction TEXT NOT NULL,
-                    lookback_hours INTEGER NOT NULL,
-                    pred_hours INTEGER NOT NULL,
-                    temperature REAL NOT NULL,
-                    top_p REAL NOT NULL,
-                    sample_count INTEGER NOT NULL,
-                    prediction_data TEXT NOT NULL
-                )
-            ''')
-            
-            # 创建实际价格表（用于验证预测准确性）
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS actual_prices (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    timestamp DATETIME NOT NULL,
-                    instrument TEXT NOT NULL,
-                    price REAL NOT NULL,
-                    volume REAL NOT NULL,
-                    UNIQUE(timestamp, instrument)
-                )
-            ''')
-            
-            # 创建系统日志表
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS system_logs (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    timestamp DATETIME NOT NULL,
-                    level TEXT NOT NULL,
-                    message TEXT NOT NULL,
-                    details TEXT
-                )
-            ''')
-            
-            conn.commit()
-            conn.close()
-            
+            init_database()
             self.logger.info("✅ 数据库初始化完成")
-            
         except Exception as e:
             self.logger.error(f"❌ 数据库初始化失败: {e}")
             raise
@@ -125,28 +78,59 @@ class PredictionScheduler:
     def save_prediction(self, report: Dict[str, Any]):
         """保存预测结果到数据库"""
         try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            
             stats = report['statistics']
             params = report['parameters']
-            
-            cursor.execute('''
-                INSERT INTO predictions (
-                    timestamp, instrument, current_price, predicted_price,
-                    price_change, price_change_pct, predicted_high, predicted_low,
-                    volatility, trend_direction, lookback_hours, pred_hours,
-                    temperature, top_p, sample_count, prediction_data
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (
+
+            # 获取预测数据
+            prediction_df = report.get('prediction_data', None)
+
+            # 计算预测的高低价
+            predicted_high = stats.get('predicted_price_end', 0)
+            predicted_low = stats.get('predicted_price_end', 0)
+
+            if prediction_df is not None and not prediction_df.empty:
+                predicted_high = float(prediction_df['high'].max())
+                predicted_low = float(prediction_df['low'].min())
+
+            # 将预测数据转换为JSON字符串
+            prediction_data_json = ""
+            if prediction_df is not None and not prediction_df.empty:
+                try:
+                    prediction_data_json = prediction_df.to_json(orient='records')
+                except:
+                    prediction_data_json = "{}"
+            else:
+                prediction_data_json = "{}"
+
+            # 构建插入SQL（兼容PostgreSQL和SQLite）
+            if db_config.db_type == 'postgresql':
+                query = '''
+                    INSERT INTO predictions (
+                        timestamp, instrument, current_price, predicted_price,
+                        price_change, price_change_pct, predicted_high, predicted_low,
+                        volatility, trend_direction, lookback_hours, pred_hours,
+                        temperature, top_p, sample_count, prediction_data
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                '''
+            else:
+                query = '''
+                    INSERT INTO predictions (
+                        timestamp, instrument, current_price, predicted_price,
+                        price_change, price_change_pct, predicted_high, predicted_low,
+                        volatility, trend_direction, lookback_hours, pred_hours,
+                        temperature, top_p, sample_count, prediction_data
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                '''
+
+            params_tuple = (
                 report['timestamp'].isoformat(),
                 report['instrument'],
                 stats.get('current_price', 0),
                 stats.get('predicted_price_end', 0),
                 stats.get('price_change', 0),
                 stats.get('price_change_pct', 0),
-                stats.get('predicted_high', 0),
-                stats.get('predicted_low', 0),
+                predicted_high,
+                predicted_low,
                 stats.get('volatility', 0),
                 stats.get('trend_direction', 'unknown'),
                 report['lookback_hours'],
@@ -154,14 +138,12 @@ class PredictionScheduler:
                 params.get('temperature', 1.0),
                 params.get('top_p', 0.9),
                 params.get('sample_count', 1),
-                json.dumps(report['prediction_data'].to_dict('records'))
-            ))
-            
-            conn.commit()
-            conn.close()
-            
+                prediction_data_json
+            )
+
+            execute_query(query, params_tuple)
             self.logger.info(f"✅ 预测结果已保存到数据库")
-            
+
         except Exception as e:
             self.logger.error(f"❌ 保存预测结果失败: {e}")
     
