@@ -55,12 +55,20 @@ class DatabaseConfig:
         """获取SQLite连接参数"""
         if self.database_url and self.database_url.startswith('sqlite://'):
             db_path = self.database_url.replace('sqlite://', '')
+            # 处理sqlite:///格式
+            if db_path.startswith('//'):
+                db_path = db_path[2:]
         else:
             # 默认SQLite路径
             db_path = os.getenv('SQLITE_DB_PATH', 'data/predictions.db')
-        
+
+        # 确保数据库目录存在
+        from pathlib import Path
+        db_file = Path(db_path)
+        db_file.parent.mkdir(parents=True, exist_ok=True)
+
         return {
-            'database': db_path
+            'database': str(db_file)
         }
     
     def get_connection_string(self) -> str:
@@ -82,8 +90,29 @@ def get_db_connection():
         return psycopg2.connect(**params)
     else:
         import sqlite3
+        from pathlib import Path
         params = db_config.get_connection_params()
-        return sqlite3.connect(params['database'])
+        db_path = params['database']
+
+        # 确保数据库目录存在
+        db_file = Path(db_path)
+        try:
+            db_file.parent.mkdir(parents=True, exist_ok=True)
+            logger.info(f"数据库路径: {db_path}")
+
+            # 检查目录权限
+            if not os.access(db_file.parent, os.W_OK):
+                logger.error(f"数据库目录没有写权限: {db_file.parent}")
+                raise PermissionError(f"数据库目录没有写权限: {db_file.parent}")
+
+            return sqlite3.connect(db_path)
+
+        except Exception as e:
+            logger.error(f"创建数据库连接失败: {e}")
+            logger.error(f"数据库路径: {db_path}")
+            logger.error(f"当前工作目录: {os.getcwd()}")
+            logger.error(f"目录权限: {oct(os.stat(db_file.parent).st_mode)[-3:] if db_file.parent.exists() else '目录不存在'}")
+            raise
 
 def execute_query(query: str, params: tuple = None, fetch: bool = False):
     """执行数据库查询"""
